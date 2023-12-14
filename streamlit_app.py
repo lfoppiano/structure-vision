@@ -75,8 +75,8 @@ def get_file_hash(fname):
     return hash_md5.hexdigest()
 
 
-st.title("Document structures visualiser")
-st.subheader("Upload a scientific article in PDF, and see the structures that are extracted by grobid .")
+st.title("Viewer for the structure extracted by Grobid on PDF documents")
+st.subheader("Upload a scientific article in PDF, and see the structures that are extracted by Grobid .")
 
 uploaded_file = st.file_uploader("Upload an article",
                                  type=("pdf", "txt"),
@@ -85,13 +85,13 @@ uploaded_file = st.file_uploader("Upload an article",
 
 with st.sidebar:
     st.header("Documentation")
-    st.markdown("https://github.com/lfoppiano/pdfstruct")
+    st.markdown("https://github.com/lfoppiano/structure-vision")
     st.markdown(
         """Upload a scientific article as PDF document and see the structures that are extracted by Grobid""")
 
     if st.session_state['git_rev'] != "unknown":
         st.markdown("**Revision number**: [" + st.session_state[
-            'git_rev'] + "](https://github.com/lfoppiano/document-qa/commit/" + st.session_state['git_rev'] + ")")
+            'git_rev'] + "](https://github.com/lfoppiano/structure-vision/commit/" + st.session_state['git_rev'] + ")")
 
 if uploaded_file:
     with st.spinner('Reading file, calling Grobid...'):

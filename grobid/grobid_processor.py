@@ -97,7 +97,8 @@ class GrobidProcessor:
 
         return output_data
 
-    def box_to_dict(self, box):
+    @staticmethod
+    def box_to_dict(box):
         return {"page": box[0], "x": box[1], "y": box[2], "width": box[3], "height": box[4], "color": "blue"}
 
     def parse_grobid_xml(self, text):
