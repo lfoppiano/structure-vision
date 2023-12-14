@@ -8,21 +8,18 @@ commit = "true"
 tag = "true"
 tag_name = "v{new_version}"
 
-#[[tool.bumpversion.files]]
-#filename = "version.txt"
-#search = "{current_version}"
-#replace = "{new_version}"
-
 [project]
-name = "pdf-struct-viewer"
+name = "structure-vision"
 license = { file = "LICENSE" }
 authors = [
     { name = "Luca Foppiano", email = "lucanoro@duck.com" },
+    { name = "Tomoya Mato", email = "tomoya.matou@gmail.com" }
 ]
 maintainers = [
-    { name = "Luca Foppiano", email = "lucanoro@duck.com" }
+    { name = "Luca Foppiano", email = "lucanoro@duck.com" },
+    { name = "Tomoya Mato", email = "tomoya.matou@gmail.com" }
 ]
-description = "PDF Structures viewer"
+description = "Viewer for the structure extracted by Grobid on PDF documents"
 readme = "README.md"
 
 dynamic = ['version']
@@ -30,6 +27,6 @@ dynamic = ['version']
 [tool.setuptools_scm]
 
 [project.urls]
-Homepage = "https://document-insights.streamlit.app"
-Repository = "https://github.com/lfoppiano/pdf-struct-viewer"
-Changelog = "https://github.com/lfoppiano/pdf-struct-viewer/blob/main/CHANGELOG.md"
+Homepage = "https://structure-vision.streamlit.app"
+Repository = "https://github.com/lfoppiano/structure-vision"
+Changelog = "https://github.com/lfoppiano/structure-vision/blob/main/CHANGELOG.md"
