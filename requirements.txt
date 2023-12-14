@@ -3,3 +3,4 @@ beautifulsoup4
 lxml
 grobid-client-python
 watchdog
+bump-my-version
