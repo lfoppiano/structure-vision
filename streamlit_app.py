@@ -65,6 +65,7 @@ def init_grobid():
 
     return grobid_processor
 
+init_grobid()
 
 def get_file_hash(fname):
     hash_md5 = blake2b()
@@ -74,15 +75,8 @@ def get_file_hash(fname):
     return hash_md5.hexdigest()
 
 
-with st.sidebar:
-    st.markdown("Sidebar. to be filled up!")
-
-
 st.title("Document structures visualiser")
 st.subheader("Upload a scientific article in PDF, and see the structures that are extracted by grobid .")
-
-st.markdown(
-    ":warning: Do not upload sensitive data. We **temporarily** store text from the uploaded PDF documents solely for the purpose of processing your request, and we **do not assume responsibility** for any subsequent use or handling of the data submitted to third parties LLMs.")
 
 uploaded_file = st.file_uploader("Upload an article",
                                  type=("pdf", "txt"),
@@ -93,7 +87,7 @@ with st.sidebar:
     st.header("Documentation")
     st.markdown("https://github.com/lfoppiano/pdfstruct")
     st.markdown(
-        """Upload a scientific article as PDF document. Once the spinner stops, you can proceed to ask your questions.""")
+        """Upload a scientific article as PDF document and see the structures that are extracted by Grobid""")
 
     if st.session_state['git_rev'] != "unknown":
         st.markdown("**Revision number**: [" + st.session_state[
