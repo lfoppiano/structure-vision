@@ -79,7 +79,7 @@ st.title("Viewer for the structure extracted by Grobid on PDF documents")
 st.subheader("Upload a scientific article in PDF, and see the structures that are extracted by Grobid .")
 
 uploaded_file = st.file_uploader("Upload an article",
-                                 type=("pdf", "txt"),
+                                 type=("pdf"),
                                  on_change=new_file,
                                  help="The full-text is extracted using Grobid. ")
 
@@ -100,4 +100,4 @@ if uploaded_file:
         tmp_file.write(bytearray(binary))
         st.session_state['binary'] = binary
         st.session_state['annotations'] = annotations = init_grobid().process_structure(tmp_file.name)
-        pdf_viewer(input=binary, annotations=annotations)
+        pdf_viewer(input=binary, width=700, height=800, annotations=annotations)

@@ -57,6 +57,16 @@ def get_parsed_value_type(quantity):
         return quantity['parsedValue']['structure']['type']
 
 
+COLORS = {
+    "persName": "blue",
+    "s": "green",
+    "ref": "red",
+    "head": "yellow",
+    "formula": "orange",
+    "figure": "brown"
+}
+
+
 class GrobidProcessor:
     def __init__(self, grobid_client):
         self.grobid_client = grobid_client
@@ -98,20 +108,32 @@ class GrobidProcessor:
         return output_data
 
     @staticmethod
-    def box_to_dict(box):
-        return {"page": box[0], "x": box[1], "y": box[2], "width": box[3], "height": box[4], "color": "blue"}
+    def box_to_dict(box, color=None, type=None):
+
+        item = {"page": box[0], "x": box[1], "y": box[2], "width": box[3], "height": box[4]}
+        if color is not None:
+            item['color'] = color
+
+        if type:
+            item['type'] = type
+
+        return item
 
     def parse_grobid_xml(self, text):
         soup = BeautifulSoup(text, 'xml')
         all_blocks_with_coordinates = soup.find_all(coords=True)
 
-        coordinates = [paragraph['coords'].split(";") for paragraph_id, paragraph in
-                       enumerate(all_blocks_with_coordinates)
-                       ]
-
-        boxes = [self.box_to_dict(box.split(",")) for coord in filter(lambda c: len(c) > 0 and c[0] != "", coordinates) for box in coord]
-
-        return boxes
+        coordinates = []
+        for paragraph_id, paragraph in enumerate(all_blocks_with_coordinates):
+            for box in filter(lambda c: len(c) > 0 and c[0] != "", paragraph['coords'].split(";")):
+                coordinates.append(
+                    self.box_to_dict(
+                        box.split(","),
+                        COLORS[paragraph.name] if paragraph.name in COLORS else "grey",
+                        type=paragraph.name
+                    ),
+                )
+        return coordinates
 
 
 def get_children_list_grobid(soup: object, use_paragraphs: object = True, verbose: object = False) -> object:
