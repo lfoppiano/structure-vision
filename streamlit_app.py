@@ -45,6 +45,27 @@ st.set_page_config(
     }
 )
 
+with st.sidebar:
+    st.markdown("## Highlights controllers")
+    highlight_title = st.toggle('Title', value=True, disabled=not st.session_state['uploaded'])
+    highlight_person_names = st.toggle('Person Names', value=True, disabled=not st.session_state['uploaded'])
+    highlight_head = st.toggle('Head of sections', value=True, disabled=not st.session_state['uploaded'])
+    highlight_sentences = st.toggle('Sentences', value=True, disabled=not st.session_state['uploaded'])
+    highlight_notes = st.toggle('Notes', value=True, disabled=not st.session_state['uploaded'])
+    highlight_formulas = st.toggle('Formulas', value=True, disabled=not st.session_state['uploaded'])
+    highlight_figures = st.toggle('Figures and tables', value=True, disabled=not st.session_state['uploaded'])
+    highlight_callout = st.toggle('References citations in text', value=True, disabled=not st.session_state['uploaded'])
+    highlight_citations = st.toggle('Citations', value=True, disabled=not st.session_state['uploaded'])
+
+    st.header("Documentation")
+    st.markdown("https://github.com/lfoppiano/structure-vision")
+    st.markdown(
+        """Upload a scientific article as PDF document and see the structures that are extracted by Grobid""")
+
+    if st.session_state['git_rev'] != "unknown":
+        st.markdown("**Revision number**: [" + st.session_state[
+            'git_rev'] + "](https://github.com/lfoppiano/structure-vision/commit/" + st.session_state['git_rev'] + ")")
+
 
 def new_file():
     st.session_state['doc_id'] = None
@@ -65,7 +86,9 @@ def init_grobid():
 
     return grobid_processor
 
+
 init_grobid()
+
 
 def get_file_hash(fname):
     hash_md5 = blake2b()
@@ -83,21 +106,40 @@ uploaded_file = st.file_uploader("Upload an article",
                                  on_change=new_file,
                                  help="The full-text is extracted using Grobid. ")
 
-with st.sidebar:
-    st.header("Documentation")
-    st.markdown("https://github.com/lfoppiano/structure-vision")
-    st.markdown(
-        """Upload a scientific article as PDF document and see the structures that are extracted by Grobid""")
-
-    if st.session_state['git_rev'] != "unknown":
-        st.markdown("**Revision number**: [" + st.session_state[
-            'git_rev'] + "](https://github.com/lfoppiano/structure-vision/commit/" + st.session_state['git_rev'] + ")")
-
 if uploaded_file:
     with st.spinner('Reading file, calling Grobid...'):
         binary = uploaded_file.getvalue()
         tmp_file = NamedTemporaryFile()
         tmp_file.write(bytearray(binary))
         st.session_state['binary'] = binary
-        st.session_state['annotations'] = annotations = init_grobid().process_structure(tmp_file.name)
+        st.session_state['annotations'] = annotations = init_grobid().process_structure(tmp_file.name) if not \
+        st.session_state['annotations'] else st.session_state['annotations']
+
+        if not highlight_sentences:
+            annotations = list(filter(lambda a: a['type'] != 's', annotations))
+
+        if not highlight_title:
+            annotations = list(filter(lambda a: a['type'] != 'title', annotations))
+
+        if not highlight_head:
+            annotations = list(filter(lambda a: a['type'] != 'head', annotations))
+
+        if not highlight_citations:
+            annotations = list(filter(lambda a: a['type'] != 'biblStruct', annotations))
+
+        if not highlight_notes:
+            annotations = list(filter(lambda a: a['type'] != 'note', annotations))
+
+        if not highlight_callout:
+            annotations = list(filter(lambda a: a['type'] != 'ref', annotations))
+
+        if not highlight_formulas:
+            annotations = list(filter(lambda a: a['type'] != 'formula', annotations))
+
+        if not highlight_person_names:
+            annotations = list(filter(lambda a: a['type'] != 'persName', annotations))
+
+        if not highlight_figures:
+            annotations = list(filter(lambda a: a['type'] != 'figure', annotations))
+
         pdf_viewer(input=binary, width=700, height=800, annotations=annotations)
