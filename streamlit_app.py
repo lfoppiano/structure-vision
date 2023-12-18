@@ -50,7 +50,8 @@ with st.sidebar:
     highlight_title = st.toggle('Title', value=True, disabled=not st.session_state['uploaded'])
     highlight_person_names = st.toggle('Person Names', value=True, disabled=not st.session_state['uploaded'])
     highlight_head = st.toggle('Head of sections', value=True, disabled=not st.session_state['uploaded'])
-    highlight_sentences = st.toggle('Sentences', value=True, disabled=not st.session_state['uploaded'])
+    highlight_sentences = st.toggle('Sentences', value=False, disabled=not st.session_state['uploaded'])
+    highlight_paragraphs = st.toggle('Paragraphs', value=True, disabled=not st.session_state['uploaded'])
     highlight_notes = st.toggle('Notes', value=True, disabled=not st.session_state['uploaded'])
     highlight_formulas = st.toggle('Formulas', value=True, disabled=not st.session_state['uploaded'])
     highlight_figures = st.toggle('Figures and tables', value=True, disabled=not st.session_state['uploaded'])
@@ -78,7 +79,7 @@ def init_grobid():
     grobid_client = GrobidClient(
         grobid_server=os.environ["GROBID_URL"],
         batch_size=1000,
-        coordinates=["s", "persName", "biblStruct", "figure", "formula", "head", "note", "title", "ref"],
+        coordinates=["p", "s", "persName", "biblStruct", "figure", "formula", "head", "note", "title", "ref"],
         sleep_time=5,
         timeout=60,
         check_server=True
@@ -118,6 +119,9 @@ if uploaded_file:
 
         if not highlight_sentences:
             annotations = list(filter(lambda a: a['type'] != 's', annotations))
+
+        if not highlight_paragraphs:
+            annotations = list(filter(lambda a: a['type'] != 'p', annotations))
 
         if not highlight_title:
             annotations = list(filter(lambda a: a['type'] != 'title', annotations))

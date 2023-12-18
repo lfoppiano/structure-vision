@@ -58,13 +58,24 @@ def get_parsed_value_type(quantity):
 
 
 COLORS = {
-    "persName": "blue",
-    "s": "green",
-    "ref": "red",
-    "head": "yellow",
-    "formula": "orange",
-    "figure": "brown"
+    "persName": "rgba(0, 0, 255, 1)",  # Blue
+    "s": "rgba(0, 128, 0, 1)",  # Green
+    "p": "rgba(0, 100, 0, 1)",  # Dark Green
+    "ref": "rgba(255, 0, 0, 1)",  # Red
+    "biblStruct": "rgba(139, 0, 0, 1)",  # Dark Red
+    "head": "rgba(139, 139, 0, 1)",  # Dark Yellow
+    "formula": "rgba(255, 165, 0, 1)",  # Orange
+    "figure": "rgba(165, 42, 42, 1)"  # Brown
 }
+
+
+def get_color(name, param):
+
+    color = COLORS[name] if name in COLORS else "rgba(128, 128, 128, 1.0)"
+    if param:
+        color = color.replace("1)", "0.4)")
+
+    return color
 
 
 class GrobidProcessor:
@@ -124,15 +135,17 @@ class GrobidProcessor:
         all_blocks_with_coordinates = soup.find_all(coords=True)
 
         coordinates = []
-        for paragraph_id, paragraph in enumerate(all_blocks_with_coordinates):
-            for box in filter(lambda c: len(c) > 0 and c[0] != "", paragraph['coords'].split(";")):
+        count = 0
+        for block_id, block in enumerate(all_blocks_with_coordinates):
+            for box in filter(lambda c: len(c) > 0 and c[0] != "", block['coords'].split(";")):
                 coordinates.append(
                     self.box_to_dict(
                         box.split(","),
-                        COLORS[paragraph.name] if paragraph.name in COLORS else "grey",
-                        type=paragraph.name
+                        get_color(block.name, count % 2 == 0),
+                        type=block.name
                     ),
                 )
+            count += 1
         return coordinates
 
 
