@@ -35,7 +35,7 @@ if 'annotations' not in st.session_state:
     st.session_state['annotations'] = None
 
 st.set_page_config(
-    page_title="Grobid structure viewer",
+    page_title="Structure vision",
     page_icon="",
     initial_sidebar_state="expanded",
     menu_items={
@@ -100,8 +100,8 @@ def get_file_hash(fname):
     return hash_md5.hexdigest()
 
 
-st.title("Viewer for the structure extracted by Grobid on PDF documents")
-st.subheader("Upload a scientific article in PDF, and see the structures that are extracted by Grobid .")
+st.title("Structure vision")
+st.subheader("[Grobid](https://github.com/kermitt2/grobid) structure viewer for PDF documents.")
 
 uploaded_file = st.file_uploader("Upload an article",
                                  type=("pdf"),
