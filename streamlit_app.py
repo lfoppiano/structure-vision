@@ -115,7 +115,7 @@ if uploaded_file:
         tmp_file.write(bytearray(binary))
         st.session_state['binary'] = binary
         st.session_state['annotations'] = annotations = init_grobid().process_structure(tmp_file.name) if not \
-        st.session_state['annotations'] else st.session_state['annotations']
+            st.session_state['annotations'] else st.session_state['annotations']
 
         if not highlight_sentences:
             annotations = list(filter(lambda a: a['type'] != 's', annotations))
