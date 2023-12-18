@@ -27,8 +27,9 @@ At the moment, a [special grobid version](https://github.com/kermitt2/grobid/pul
 pip install -r requirements
 ```
 
-**NOTE
-**: Till this component will not be released, install it in the following way (if you don't have access, you can ask me lucanoro AT duck.com)
+## Developer notes
+
+**NOTE**: Till [streamlit-pdf-viewer](https://github.com/lfoppiano/streamlit-pdf-viewer) will not be open to public, install it in the following way (if you don't have access, you can ask me lucanoro AT duck.com)
 
 ```shell
 pip install -e git+https://github.com/lfoppiano/streamlit-pdf-viewer 
