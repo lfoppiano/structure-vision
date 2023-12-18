@@ -19,7 +19,7 @@ https://structure-vision.streamlit.app/
 
 This is just a test application for [streamlit-pdf-viewer](https://github.com/lfoppiano/streamlit-pdf-viewer): a new streamlit component for visualising enhanced PDF documents.
 
-At the moment a [special grobid version](https://github.com/kermitt2/grobid/pull/1068) is required. 
+At the moment, a [special grobid version](https://github.com/kermitt2/grobid/pull/1068) is required. 
 
 ## Getting started
 
