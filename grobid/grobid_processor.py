@@ -1,9 +1,6 @@
 import re
-from collections import OrderedDict
 from html import escape
-from pathlib import Path
 
-import dateparser
 from bs4 import BeautifulSoup
 
 
