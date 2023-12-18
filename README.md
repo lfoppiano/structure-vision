@@ -2,8 +2,16 @@
 
 **Work in progress**
 
-Streamlit viewer for the structure extracted by Grobid on PDF documents. 
-Allows to apply on PDF documents the structures extracted by Grobid.
+Streamlit application, visualising the structures extracted by [Grobid](https://github.com/kermitt2/grobid) that include PDF coordinates. 
+
+This application allows to visualise the following components: 
+ - paragraphs or sentences
+ - head of sections
+ - authors
+ - bibliographic references
+ - callout references in text
+ - figures
+ - formulas
 
 https://structure-vision.streamlit.app/
 
