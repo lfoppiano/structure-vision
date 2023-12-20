@@ -4,11 +4,12 @@ COLORS = {
     "persName": "rgba(0, 0, 255, 1)",  # Blue
     "s": "rgba(0, 128, 0, 1)",  # Green
     "p": "rgba(0, 100, 0, 1)",  # Dark Green
-    "ref": "rgba(255, 0, 0, 1)",  # Red
+    "ref": "rgba(255, 255, 0, 1)",  # ??
     "biblStruct": "rgba(139, 0, 0, 1)",  # Dark Red
     "head": "rgba(139, 139, 0, 1)",  # Dark Yellow
     "formula": "rgba(255, 165, 0, 1)",  # Orange
-    "figure": "rgba(165, 42, 42, 1)"  # Brown
+    "figure": "rgba(165, 42, 42, 1)",  # Brown
+    "title": "rgba(255, 0, 0, 1)"  # Red
 }
 
 
@@ -38,9 +39,9 @@ class GrobidProcessor:
         if status != 200:
             return
 
-        output_data = self.get_coordinates(text)
+        coordinates = self.get_coordinates(text)
 
-        return output_data
+        return coordinates
 
     @staticmethod
     def box_to_dict(box, color=None, type=None):
