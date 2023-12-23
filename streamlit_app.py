@@ -49,6 +49,7 @@ with st.sidebar:
     st.markdown("## Highlights controllers")
     highlight_title = st.toggle('Title', value=True, disabled=not st.session_state['uploaded'])
     highlight_person_names = st.toggle('Person Names', value=True, disabled=not st.session_state['uploaded'])
+    highlight_affiliations = st.toggle('Affiliations', value=True, disabled=not st.session_state['uploaded'])
     highlight_head = st.toggle('Head of sections', value=True, disabled=not st.session_state['uploaded'])
     highlight_sentences = st.toggle('Sentences', value=False, disabled=not st.session_state['uploaded'])
     highlight_paragraphs = st.toggle('Paragraphs', value=True, disabled=not st.session_state['uploaded'])
@@ -79,7 +80,8 @@ def init_grobid():
     grobid_client = GrobidClient(
         grobid_server=os.environ["GROBID_URL"],
         batch_size=1000,
-        coordinates=["p", "s", "persName", "biblStruct", "figure", "formula", "head", "note", "title", "ref"],
+        coordinates=["p", "s", "persName", "biblStruct", "figure", "formula", "head", "note", "title", "ref",
+                     "affiliation"],
         sleep_time=5,
         timeout=60,
         check_server=True
@@ -146,5 +148,8 @@ if uploaded_file:
 
         if not highlight_figures:
             annotations = list(filter(lambda a: a['type'] != 'figure', annotations))
+
+        if not highlight_affiliations:
+            annotations = list(filter(lambda a: a['type'] != '', annotations))
 
         pdf_viewer(input=binary, width=700, height=800, annotations=annotations)

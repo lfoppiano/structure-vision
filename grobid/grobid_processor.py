@@ -9,7 +9,8 @@ COLORS = {
     "head": "rgba(139, 139, 0, 1)",  # Dark Yellow
     "formula": "rgba(255, 165, 0, 1)",  # Orange
     "figure": "rgba(165, 42, 42, 1)",  # Brown
-    "title": "rgba(255, 0, 0, 1)"  # Red
+    "title": "rgba(255, 0, 0, 1)",  # Red
+    "affiliation": "rgba(255, 165, 0, 1)"  # red-orengi
 }
 
 
