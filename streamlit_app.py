@@ -58,6 +58,9 @@ with st.sidebar:
     highlight_figures = st.toggle('Figures and tables', value=True, disabled=not st.session_state['uploaded'])
     highlight_callout = st.toggle('References citations in text', value=True, disabled=not st.session_state['uploaded'])
     highlight_citations = st.toggle('Citations', value=True, disabled=not st.session_state['uploaded'])
+    st.divider()
+    annotation_thickness = st.slider(label="Annotation boxes border thickness", min_value=1, max_value=6, value=1)
+    pages_vertical_spacing = st.slider(label="Pages vertical spacing", min_value=2, max_value=10, value=2)
 
     st.header("Documentation")
     st.markdown("https://github.com/lfoppiano/structure-vision")
@@ -152,4 +155,10 @@ if uploaded_file:
         if not highlight_affiliations:
             annotations = list(filter(lambda a: a['type'] != '', annotations))
 
-        pdf_viewer(input=binary, width=700, height=800, annotations=annotations)
+        pdf_viewer(
+            input=binary,
+            width=700,
+            annotations=annotations,
+            pages_vertical_spacing=pages_vertical_spacing,
+            annotation_outline_size=annotation_thickness
+        )
