@@ -58,7 +58,12 @@ with st.sidebar:
     highlight_figures = st.toggle('Figures and tables', value=True, disabled=not st.session_state['uploaded'])
     highlight_callout = st.toggle('References citations in text', value=True, disabled=not st.session_state['uploaded'])
     highlight_citations = st.toggle('Citations', value=True, disabled=not st.session_state['uploaded'])
-    st.divider()
+
+    st.header("Page Selection")
+    page_options = list(range(1, 101))  # Replace 101 with the actual number of pages + 1
+    selected_pages = st.multiselect("Select pages to display", page_options, default=[])
+
+    st.header("Display options")
     annotation_thickness = st.slider(label="Annotation boxes border thickness", min_value=1, max_value=6, value=1)
     pages_vertical_spacing = st.slider(label="Pages vertical spacing", min_value=2, max_value=10, value=2)
 
@@ -160,5 +165,6 @@ if uploaded_file:
             width=700,
             annotations=annotations,
             pages_vertical_spacing=pages_vertical_spacing,
-            annotation_outline_size=annotation_thickness
+            annotation_outline_size=annotation_thickness,
+            pages_to_render=selected_pages,
         )
