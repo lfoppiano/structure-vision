@@ -26,7 +26,7 @@ class GrobidProcessor:
     def __init__(self, grobid_client):
         self.grobid_client = grobid_client
 
-    def process_structure(self, input_path):
+    def process_structure(self, input_path) -> (dict, int):
         pdf_file, status, text = self.grobid_client.process_pdf("processFulltextDocument",
                                                                 input_path,
                                                                 consolidate_header=True,
@@ -41,8 +41,9 @@ class GrobidProcessor:
             return
 
         coordinates = self.get_coordinates(text)
+        pages = self.get_pages(text)
 
-        return coordinates
+        return coordinates, len(pages)
 
     @staticmethod
     def box_to_dict(box, color=None, type=None):
@@ -76,3 +77,13 @@ class GrobidProcessor:
                 )
             count += 1
         return coordinates
+
+    def get_pages(self, text):
+        soup = BeautifulSoup(text, 'xml')
+        pages_infos = soup.find_all("surface")
+
+        pages = [{'width': float(page['lrx']) - float(page['ulx']), 'height': float(page['lry']) - float(page['uly'])}
+             for page in pages_infos]
+
+        return pages
+

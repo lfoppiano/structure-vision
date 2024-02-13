@@ -34,6 +34,12 @@ if 'binary' not in st.session_state:
 if 'annotations' not in st.session_state:
     st.session_state['annotations'] = None
 
+if 'pages' not in st.session_state:
+    st.session_state['pages'] = None
+
+if 'page_selection' not in st.session_state:
+    st.session_state['page_selection'] = []
+
 st.set_page_config(
     page_title="Structure vision",
     page_icon="",
@@ -59,13 +65,21 @@ with st.sidebar:
     highlight_callout = st.toggle('References citations in text', value=True, disabled=not st.session_state['uploaded'])
     highlight_citations = st.toggle('Citations', value=True, disabled=not st.session_state['uploaded'])
 
-    st.header("Page Selection")
-    page_options = list(range(1, 101))  # Replace 101 with the actual number of pages + 1
-    selected_pages = st.multiselect("Select pages to display", page_options, default=[])
-
     st.header("Display options")
     annotation_thickness = st.slider(label="Annotation boxes border thickness", min_value=1, max_value=6, value=1)
     pages_vertical_spacing = st.slider(label="Pages vertical spacing", min_value=2, max_value=10, value=2)
+
+    st.header("Page Selection")
+    placeholder = st.empty()
+
+    if not st.session_state['pages']:
+        st.session_state['page_selection'] = placeholder.multiselect(
+            "Select pages to display",
+            options=[],
+            default=[],
+            help="The page number considered is the PDF number and not the document page number.",
+            disabled=not st.session_state['pages']
+        )
 
     st.header("Documentation")
     st.markdown("https://github.com/lfoppiano/structure-vision")
@@ -119,52 +133,75 @@ uploaded_file = st.file_uploader("Upload an article",
                                  help="The full-text is extracted using Grobid. ")
 
 if uploaded_file:
-    with st.spinner('Reading file, calling Grobid...'):
-        binary = uploaded_file.getvalue()
-        tmp_file = NamedTemporaryFile()
-        tmp_file.write(bytearray(binary))
-        st.session_state['binary'] = binary
-        st.session_state['annotations'] = annotations = init_grobid().process_structure(tmp_file.name) if not \
-            st.session_state['annotations'] else st.session_state['annotations']
+    if not st.session_state['binary']:
+        with (st.spinner('Reading file, calling Grobid...')):
+            binary = uploaded_file.getvalue()
+            tmp_file = NamedTemporaryFile()
+            tmp_file.write(bytearray(binary))
+            st.session_state['binary'] = binary
+            annotations, pages = init_grobid().process_structure(tmp_file.name)
 
+            st.session_state['annotations'] = annotations if not st.session_state['annotations'] else st.session_state[
+                'annotations']
+            st.session_state['pages'] = pages if not st.session_state['pages'] else st.session_state['pages']
+
+    if st.session_state['pages']:
+        st.session_state['page_selection'] = placeholder.multiselect(
+            "Select pages to display",
+            options=list(range(1, st.session_state['pages'])),
+            default=[],
+            help="The page number considered is the PDF number and not the document page number.",
+            disabled=not st.session_state['pages']
+        )
+
+    with (st.spinner("Rendering PDF document")):
         if not highlight_sentences:
-            annotations = list(filter(lambda a: a['type'] != 's', annotations))
+            annotations = list(filter(lambda a: a['type'] != 's', st.session_state['annotations']))
 
         if not highlight_paragraphs:
-            annotations = list(filter(lambda a: a['type'] != 'p', annotations))
+            annotations = list(filter(lambda a: a['type'] != 'p', st.session_state['annotations']))
 
         if not highlight_title:
-            annotations = list(filter(lambda a: a['type'] != 'title', annotations))
+            annotations = list(filter(lambda a: a['type'] != 'title', st.session_state['annotations']))
 
         if not highlight_head:
-            annotations = list(filter(lambda a: a['type'] != 'head', annotations))
+            annotations = list(filter(lambda a: a['type'] != 'head', st.session_state['annotations']))
 
         if not highlight_citations:
-            annotations = list(filter(lambda a: a['type'] != 'biblStruct', annotations))
+            annotations = list(filter(lambda a: a['type'] != 'biblStruct', st.session_state['annotations']))
 
         if not highlight_notes:
-            annotations = list(filter(lambda a: a['type'] != 'note', annotations))
+            annotations = list(filter(lambda a: a['type'] != 'note', st.session_state['annotations']))
 
         if not highlight_callout:
-            annotations = list(filter(lambda a: a['type'] != 'ref', annotations))
+            annotations = list(filter(lambda a: a['type'] != 'ref', st.session_state['annotations']))
 
         if not highlight_formulas:
-            annotations = list(filter(lambda a: a['type'] != 'formula', annotations))
+            annotations = list(filter(lambda a: a['type'] != 'formula', st.session_state['annotations']))
 
         if not highlight_person_names:
-            annotations = list(filter(lambda a: a['type'] != 'persName', annotations))
+            annotations = list(filter(lambda a: a['type'] != 'persName', st.session_state['annotations']))
 
         if not highlight_figures:
-            annotations = list(filter(lambda a: a['type'] != 'figure', annotations))
+            annotations = list(filter(lambda a: a['type'] != 'figure', st.session_state['annotations']))
 
         if not highlight_affiliations:
-            annotations = list(filter(lambda a: a['type'] != '', annotations))
+            annotations = list(filter(lambda a: a['type'] != '', st.session_state['annotations']))
 
-        pdf_viewer(
-            input=binary,
+        component = pdf_viewer(
+            input=st.session_state['binary'],
             width=700,
-            annotations=annotations,
+            annotations=st.session_state['annotations'],
             pages_vertical_spacing=pages_vertical_spacing,
             annotation_outline_size=annotation_thickness,
-            pages_to_render=selected_pages,
+            pages_to_render=st.session_state['page_selection'],
         )
+
+# if st.session_state['pages']:
+#     st.session_state['page_selection'] = placeholder.multiselect(
+#         "Select pages to display",
+#         options=list(range(1, st.session_state['pages'])),
+#         default=[],
+#         help="The page number considered is the PDF number and not the document page number.",
+#         disabled=not st.session_state['pages']
+#     )
