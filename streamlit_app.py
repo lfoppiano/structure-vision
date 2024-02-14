@@ -196,12 +196,3 @@ if uploaded_file:
             annotation_outline_size=annotation_thickness,
             pages_to_render=st.session_state['page_selection'],
         )
-
-# if st.session_state['pages']:
-#     st.session_state['page_selection'] = placeholder.multiselect(
-#         "Select pages to display",
-#         options=list(range(1, st.session_state['pages'])),
-#         default=[],
-#         help="The page number considered is the PDF number and not the document page number.",
-#         disabled=not st.session_state['pages']
-#     )
