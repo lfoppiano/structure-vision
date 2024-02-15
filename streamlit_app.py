@@ -188,10 +188,10 @@ if uploaded_file:
         if not highlight_affiliations:
             annotations = list(filter(lambda a: a['type'] != '', st.session_state['annotations']))
 
-        component = pdf_viewer(
+        pdf_viewer(
             input=st.session_state['binary'],
             width=700,
-            annotations=st.session_state['annotations'],
+            annotations=annotations,
             pages_vertical_spacing=pages_vertical_spacing,
             annotation_outline_size=annotation_thickness,
             pages_to_render=st.session_state['page_selection'],
