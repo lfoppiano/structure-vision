@@ -32,7 +32,7 @@ if 'binary' not in st.session_state:
     st.session_state['binary'] = None
 
 if 'annotations' not in st.session_state:
-    st.session_state['annotations'] = None
+    st.session_state['annotations'] = []
 
 if 'pages' not in st.session_state:
     st.session_state['pages'] = None
@@ -155,38 +155,40 @@ if uploaded_file:
         )
 
     with (st.spinner("Rendering PDF document")):
+        annotations = st.session_state['annotations']
+
         if not highlight_sentences:
-            annotations = list(filter(lambda a: a['type'] != 's', st.session_state['annotations']))
+            annotations = list(filter(lambda a: a['type'] != 's', annotations))
 
         if not highlight_paragraphs:
-            annotations = list(filter(lambda a: a['type'] != 'p', st.session_state['annotations']))
+            annotations = list(filter(lambda a: a['type'] != 'p', annotations))
 
         if not highlight_title:
-            annotations = list(filter(lambda a: a['type'] != 'title', st.session_state['annotations']))
+            annotations = list(filter(lambda a: a['type'] != 'title', annotations))
 
         if not highlight_head:
-            annotations = list(filter(lambda a: a['type'] != 'head', st.session_state['annotations']))
+            annotations = list(filter(lambda a: a['type'] != 'head', annotations))
 
         if not highlight_citations:
-            annotations = list(filter(lambda a: a['type'] != 'biblStruct', st.session_state['annotations']))
+            annotations = list(filter(lambda a: a['type'] != 'biblStruct', annotations))
 
         if not highlight_notes:
-            annotations = list(filter(lambda a: a['type'] != 'note', st.session_state['annotations']))
+            annotations = list(filter(lambda a: a['type'] != 'note', annotations))
 
         if not highlight_callout:
-            annotations = list(filter(lambda a: a['type'] != 'ref', st.session_state['annotations']))
+            annotations = list(filter(lambda a: a['type'] != 'ref', annotations))
 
         if not highlight_formulas:
-            annotations = list(filter(lambda a: a['type'] != 'formula', st.session_state['annotations']))
+            annotations = list(filter(lambda a: a['type'] != 'formula', annotations))
 
         if not highlight_person_names:
-            annotations = list(filter(lambda a: a['type'] != 'persName', st.session_state['annotations']))
+            annotations = list(filter(lambda a: a['type'] != 'persName', annotations))
 
         if not highlight_figures:
-            annotations = list(filter(lambda a: a['type'] != 'figure', st.session_state['annotations']))
+            annotations = list(filter(lambda a: a['type'] != 'figure', annotations))
 
         if not highlight_affiliations:
-            annotations = list(filter(lambda a: a['type'] != '', st.session_state['annotations']))
+            annotations = list(filter(lambda a: a['type'] != '', annotations))
 
         pdf_viewer(
             input=st.session_state['binary'],
