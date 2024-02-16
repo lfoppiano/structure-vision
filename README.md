@@ -25,6 +25,7 @@ At the moment, a [special grobid version](https://github.com/kermitt2/grobid/pul
 
 ```shell
 pip install -r requirements
+streamlit run streamlit_app.py
 ```
 
 ## Developer notes
