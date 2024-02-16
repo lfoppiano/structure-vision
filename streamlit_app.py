@@ -188,7 +188,7 @@ if uploaded_file:
             annotations = list(filter(lambda a: a['type'] != 'figure', annotations))
 
         if not highlight_affiliations:
-            annotations = list(filter(lambda a: a['type'] != '', annotations))
+            annotations = list(filter(lambda a: a['type'] != 'affiliation', annotations))
 
         pdf_viewer(
             input=st.session_state['binary'],
