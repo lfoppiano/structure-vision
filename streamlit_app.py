@@ -78,7 +78,8 @@ with st.sidebar:
             options=[],
             default=[],
             help="The page number considered is the PDF number and not the document page number.",
-            disabled=not st.session_state['pages']
+            disabled=not st.session_state['pages'],
+            key=1
         )
 
     st.header("Documentation")
@@ -94,7 +95,8 @@ with st.sidebar:
 def new_file():
     st.session_state['doc_id'] = None
     st.session_state['uploaded'] = True
-    st.session_state['annotations'] = None
+    st.session_state['annotations'] = []
+    st.session_state['binary'] = None
 
 
 @st.cache_resource
@@ -151,7 +153,8 @@ if uploaded_file:
             options=list(range(1, st.session_state['pages'])),
             default=[],
             help="The page number considered is the PDF number and not the document page number.",
-            disabled=not st.session_state['pages']
+            disabled=not st.session_state['pages'],
+            key=2
         )
 
     with (st.spinner("Rendering PDF document")):
