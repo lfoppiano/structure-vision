@@ -48,7 +48,8 @@ st.set_page_config(
         'Get Help': 'https://github.com/lfoppiano/pdf-struct',
         'Report a bug': "https://github.com/lfoppiano/pdf-struct/issues",
         'About': "View the structures extracted by Grobid."
-    }
+    },
+    layout='wide'
 )
 
 with st.sidebar:
@@ -192,7 +193,6 @@ if uploaded_file:
 
         pdf_viewer(
             input=st.session_state['binary'],
-            width=700,
             annotations=annotations,
             pages_vertical_spacing=pages_vertical_spacing,
             annotation_outline_size=annotation_thickness,
