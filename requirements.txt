@@ -4,4 +4,4 @@ lxml
 grobid-client-python
 watchdog
 bump-my-version
-streamlit-pdf-viewer==0.0.8
+streamlit-pdf-viewer==0.0.9
