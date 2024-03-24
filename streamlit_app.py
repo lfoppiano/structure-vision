@@ -69,6 +69,10 @@ with st.sidebar:
     annotation_thickness = st.slider(label="Annotation boxes border thickness", min_value=1, max_value=6, value=1)
     pages_vertical_spacing = st.slider(label="Pages vertical spacing", min_value=2, max_value=10, value=2)
 
+    st.header("Height and width")
+    width = st.slider(label="PDF width", min_value=100, max_value=1000, value=700)
+    height = st.slider(label="PDF height", min_value=-1, max_value=10000, value=1000)
+
     st.header("Page Selection")
     placeholder = st.empty()
 
@@ -193,11 +197,22 @@ if uploaded_file:
         if not highlight_affiliations:
             annotations = list(filter(lambda a: a['type'] != 'affiliation', annotations))
 
-        pdf_viewer(
-            input=st.session_state['binary'],
-            width=700,
-            annotations=annotations,
-            pages_vertical_spacing=pages_vertical_spacing,
-            annotation_outline_size=annotation_thickness,
-            pages_to_render=st.session_state['page_selection'],
-        )
+        if height > -1:
+            pdf_viewer(
+                input=st.session_state['binary'],
+                width=width,
+                height=height,
+                annotations=annotations,
+                pages_vertical_spacing=pages_vertical_spacing,
+                annotation_outline_size=annotation_thickness,
+                pages_to_render=st.session_state['page_selection'],
+            )
+        else:
+            pdf_viewer(
+                input=st.session_state['binary'],
+                width=width,
+                annotations=annotations,
+                pages_vertical_spacing=pages_vertical_spacing,
+                annotation_outline_size=annotation_thickness,
+                pages_to_render=st.session_state['page_selection'],
+            )
