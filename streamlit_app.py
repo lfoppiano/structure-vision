@@ -67,7 +67,7 @@ with st.sidebar:
 
     st.header("Display options")
     annotation_thickness = st.slider(label="Annotation boxes border thickness", min_value=1, max_value=6, value=1)
-    pages_vertical_spacing = st.slider(label="Pages vertical spacing", min_value=2, max_value=10, value=2)
+    pages_vertical_spacing = st.slider(label="Pages vertical spacing", min_value=0, max_value=10, value=2)
 
     st.header("Height and width")
     width = st.slider(label="PDF width", min_value=100, max_value=1000, value=700)
