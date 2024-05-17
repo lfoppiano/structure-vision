@@ -71,7 +71,7 @@ with st.sidebar:
 
     st.header("Height and width")
     width = st.slider(label="PDF width", min_value=100, max_value=1000, value=700)
-    height = st.slider(label="PDF height", min_value=-1, max_value=10000, value=1000)
+    height = st.slider(label="PDF height", min_value=-1, max_value=10000, value=-1)
 
     st.header("Page Selection")
     placeholder = st.empty()
