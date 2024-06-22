@@ -52,7 +52,11 @@ st.set_page_config(
 )
 
 with st.sidebar:
-    st.markdown("## Highlights controllers")
+    st.header("Text")
+    enable_text = st.toggle('Render text in PDF', value=False, disabled=not st.session_state['uploaded'],
+                            help="Enable the selection and copy-paste on the PDF")
+
+    st.header("Highlights")
     highlight_title = st.toggle('Title', value=True, disabled=not st.session_state['uploaded'])
     highlight_person_names = st.toggle('Person Names', value=True, disabled=not st.session_state['uploaded'])
     highlight_affiliations = st.toggle('Affiliations', value=True, disabled=not st.session_state['uploaded'])
@@ -65,7 +69,7 @@ with st.sidebar:
     highlight_callout = st.toggle('References citations in text', value=True, disabled=not st.session_state['uploaded'])
     highlight_citations = st.toggle('Citations', value=True, disabled=not st.session_state['uploaded'])
 
-    st.header("Display options")
+    st.header("Annotations")
     annotation_thickness = st.slider(label="Annotation boxes border thickness", min_value=1, max_value=6, value=1)
     pages_vertical_spacing = st.slider(label="Pages vertical spacing", min_value=0, max_value=10, value=2)
 
@@ -206,6 +210,7 @@ if uploaded_file:
                 pages_vertical_spacing=pages_vertical_spacing,
                 annotation_outline_size=annotation_thickness,
                 pages_to_render=st.session_state['page_selection'],
+                render_text=enable_text
             )
         else:
             pdf_viewer(
@@ -215,4 +220,5 @@ if uploaded_file:
                 pages_vertical_spacing=pages_vertical_spacing,
                 annotation_outline_size=annotation_thickness,
                 pages_to_render=st.session_state['page_selection'],
+                render_text=enable_text
             )
