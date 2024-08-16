@@ -1,6 +1,7 @@
 # structure-vision
 
 Streamlit application, visualising the structures extracted by [Grobid](https://github.com/kermitt2/grobid) that include PDF coordinates. 
+It uses the Streamlit component [streamlit-pdf-viewer](https://github.com/lfoppiano/streamlit-pdf-viewer) we've been developing. 
 
 This application allows you to visualise the following components: 
  - authors
@@ -12,6 +13,8 @@ This application allows you to visualise the following components:
  - figures
  - formulas
  - bibliographic references
+
+In addition, the sidebar contains other options, mostly for testing the various 
 
 **Demo**: https://structure-vision.streamlit.app/
 
@@ -28,7 +31,7 @@ streamlit run streamlit_app.py
 
 ## Developer notes
 
-**NOTE**: Till [streamlit-pdf-viewer](https://github.com/lfoppiano/streamlit-pdf-viewer) will not be open to the public, install it in the following way (if you don't have access, you can ask me: lucanoro AT duck.com)
+To install the Streamlit PDF viewer via github: 
 
 ```shell
 pip install -e git+https://github.com/lfoppiano/streamlit-pdf-viewer 
