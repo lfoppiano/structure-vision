@@ -51,6 +51,16 @@ st.set_page_config(
     }
 )
 
+# from glob import glob
+# import streamlit as st
+#
+# paths = glob("/Users/lfoppiano/kDrive/library/articles/materials informatics/polymers/*.pdf")
+# for id, (tab,path) in enumerate(zip(st.tabs(paths),paths)):
+#     with tab:
+#         with st.container(height=600):
+#             pdf_viewer(path, width=500, render_text=True)
+
+
 with st.sidebar:
     st.header("Text")
     enable_text = st.toggle('Render text in PDF', value=False, disabled=not st.session_state['uploaded'],
@@ -74,6 +84,7 @@ with st.sidebar:
     pages_vertical_spacing = st.slider(label="Pages vertical spacing", min_value=0, max_value=10, value=2)
 
     st.header("Height and width")
+    resolution_boost = st.slider(label="Resolution boost", min_value=1, max_value=10, value=1)
     width = st.slider(label="PDF width", min_value=100, max_value=1000, value=700)
     height = st.slider(label="PDF height", min_value=-1, max_value=10000, value=-1)
 
@@ -210,7 +221,8 @@ if uploaded_file:
                 pages_vertical_spacing=pages_vertical_spacing,
                 annotation_outline_size=annotation_thickness,
                 pages_to_render=st.session_state['page_selection'],
-                render_text=enable_text
+                render_text=enable_text,
+                resolution_boost=resolution_boost
             )
         else:
             pdf_viewer(
@@ -220,5 +232,6 @@ if uploaded_file:
                 pages_vertical_spacing=pages_vertical_spacing,
                 annotation_outline_size=annotation_thickness,
                 pages_to_render=st.session_state['page_selection'],
-                render_text=enable_text
+                render_text=enable_text,
+                resolution_boost=resolution_boost
             )
