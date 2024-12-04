@@ -126,7 +126,7 @@ def init_grobid():
         coordinates=["p", "s", "persName", "biblStruct", "figure", "formula", "head", "note", "title", "ref",
                      "affiliation"],
         sleep_time=5,
-        timeout=60,
+        timeout=240,
         check_server=True
     )
     grobid_processor = GrobidProcessor(grobid_client)
@@ -155,16 +155,23 @@ uploaded_file = st.file_uploader("Upload an article",
 
 if uploaded_file:
     if not st.session_state['binary']:
+        response = None
         with (st.spinner('Reading file, calling Grobid...')):
             binary = uploaded_file.getvalue()
             tmp_file = NamedTemporaryFile()
             tmp_file.write(bytearray(binary))
             st.session_state['binary'] = binary
-            annotations, pages = init_grobid().process_structure(tmp_file.name)
+            response = init_grobid().process_structure(tmp_file.name)
 
-            st.session_state['annotations'] = annotations if not st.session_state['annotations'] else st.session_state[
-                'annotations']
-            st.session_state['pages'] = pages if not st.session_state['pages'] else st.session_state['pages']
+        if response is None:
+            st.error("Error processing the document, maybe the Grobid instance is overloaded. Please try again.")
+            st.stop()
+
+        annotations, pages = response
+
+        st.session_state['annotations'] = annotations if not st.session_state['annotations'] else st.session_state[
+            'annotations']
+        st.session_state['pages'] = pages if not st.session_state['pages'] else st.session_state['pages']
 
     if st.session_state['pages']:
         st.session_state['page_selection'] = placeholder.multiselect(
