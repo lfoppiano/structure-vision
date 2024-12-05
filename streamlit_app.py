@@ -137,6 +137,9 @@ def init_grobid():
 init_grobid()
 
 
+def my_custom_annotation_handler(annotation):
+    st.success(f"Annotation {annotation} clicked.")
+
 def get_file_hash(fname):
     hash_md5 = blake2b()
     with open(fname, "rb") as f:
@@ -229,7 +232,8 @@ if uploaded_file:
                 annotation_outline_size=annotation_thickness,
                 pages_to_render=st.session_state['page_selection'],
                 render_text=enable_text,
-                resolution_boost=resolution_boost
+                resolution_boost=resolution_boost,
+                on_annotation_click=my_custom_annotation_handler
             )
         else:
             pdf_viewer(
@@ -240,5 +244,6 @@ if uploaded_file:
                 annotation_outline_size=annotation_thickness,
                 pages_to_render=st.session_state['page_selection'],
                 render_text=enable_text,
-                resolution_boost=resolution_boost
+                resolution_boost=resolution_boost,
+                on_annotation_click=my_custom_annotation_handler
             )
