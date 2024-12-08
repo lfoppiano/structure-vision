@@ -222,7 +222,7 @@ if uploaded_file:
         if height > -1:
             pdf_viewer(
                 input=st.session_state['binary'],
-                width=width,
+                width="50%",
                 height=height,
                 annotations=annotations,
                 pages_vertical_spacing=pages_vertical_spacing,
@@ -234,7 +234,7 @@ if uploaded_file:
         else:
             pdf_viewer(
                 input=st.session_state['binary'],
-                width=width,
+                width="50%",
                 annotations=annotations,
                 pages_vertical_spacing=pages_vertical_spacing,
                 annotation_outline_size=annotation_thickness,
