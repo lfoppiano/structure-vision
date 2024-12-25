@@ -62,6 +62,9 @@ st.set_page_config(
 
 
 with st.sidebar:
+    if st.session_state['binary']:
+        st.header("Annotation")
+        annotations_component = st.empty()
     st.header("Text")
     enable_text = st.toggle('Render text in PDF', value=False, disabled=not st.session_state['uploaded'],
                             help="Enable the selection and copy-paste on the PDF")
@@ -136,6 +139,28 @@ def init_grobid():
 
 init_grobid()
 
+annotations_to_element = {
+    'p': 'Paragraph',
+    's': 'Sentence',
+    'persName': 'Person Name',
+    'biblStruct': 'Citation',
+    'figure': 'Figure',
+    'formula': 'Formula',
+    'head': 'Head of section',
+    'note': 'Note',
+    'title': 'Title',
+    'ref': 'Reference callout',
+    'affiliation': 'Affiliation'
+}
+
+def my_custom_annotation_handler(annotation):
+    output_json = {
+        "Index": annotation['index'],
+        "Page": annotation['page'],
+        "Structure": annotations_to_element[annotation['type']],
+    }
+
+    annotations_component.json(output_json)
 
 def get_file_hash(fname):
     hash_md5 = blake2b()
@@ -229,7 +254,8 @@ if uploaded_file:
                 annotation_outline_size=annotation_thickness,
                 pages_to_render=st.session_state['page_selection'],
                 render_text=enable_text,
-                resolution_boost=resolution_boost
+                resolution_boost=resolution_boost,
+                on_annotation_click=my_custom_annotation_handler
             )
         else:
             pdf_viewer(
@@ -240,5 +266,6 @@ if uploaded_file:
                 annotation_outline_size=annotation_thickness,
                 pages_to_render=st.session_state['page_selection'],
                 render_text=enable_text,
-                resolution_boost=resolution_boost
+                resolution_boost=resolution_boost,
+                on_annotation_click=my_custom_annotation_handler
             )
