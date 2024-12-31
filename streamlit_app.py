@@ -144,6 +144,7 @@ annotations_to_element = {
     's': 'Sentence',
     'persName': 'Person Name',
     'biblStruct': 'Citation',
+    'graphic': 'Figure',
     'figure': 'Figure',
     'formula': 'Formula',
     'head': 'Head of section',
