@@ -3,4 +3,4 @@ beautifulsoup4
 lxml
 grobid-client-python
 watchdog
-streamlit-pdf-viewer==0.0.20-rc0
+streamlit-pdf-viewer==0.0.20
