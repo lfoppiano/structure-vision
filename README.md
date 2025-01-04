@@ -29,6 +29,13 @@ pip install -r requirements
 streamlit run streamlit_app.py
 ```
 
+The Grobid URL should be provideed via environment variables, or via a `.env` file, which should be created in the the root folder of the project. 
+Here an example of how the project is configured to hit the local Grobid instance: 
+
+```
+GROBID_URL=http://localhost:8070
+```
+
 ## Developer notes
 
 To install the Streamlit PDF viewer via github: 
