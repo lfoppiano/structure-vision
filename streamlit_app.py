@@ -40,6 +40,9 @@ if 'pages' not in st.session_state:
 if 'page_selection' not in st.session_state:
     st.session_state['page_selection'] = []
 
+if 'size_in_pixel' not in st.session_state:
+    st.session_state['size_in_pixel'] = None
+
 st.set_page_config(
     page_title="Structure vision",
     page_icon="",
@@ -88,8 +91,14 @@ with st.sidebar:
 
     st.header("Height and width")
     resolution_boost = st.slider(label="Resolution boost", min_value=1, max_value=10, value=1)
-    width = st.slider(label="PDF width", min_value=100, max_value=1000, value=700)
-    height = st.slider(label="PDF height", min_value=-1, max_value=10000, value=-1)
+    st.session_state['size_in_pixel'] = st.toggle('Size in pixels', value=True,
+                                                  disabled=not st.session_state['uploaded'])
+    if st.session_state['size_in_pixel']:
+        width = st.slider(label="PDF width", min_value=100, max_value=1000, value=700)
+        height = st.slider(label="PDF height", min_value=-1, max_value=10000, value=-1)
+    else:
+        width = st.slider(label="PDF width", min_value=-1, max_value=100, value=100)
+        width = str(width) + "%"
 
     st.header("Page Selection")
     placeholder = st.empty()
@@ -154,6 +163,7 @@ annotations_to_element = {
     'affiliation': 'Affiliation'
 }
 
+
 def my_custom_annotation_handler(annotation):
     output_json = {
         "Index": annotation['index'],
@@ -162,6 +172,7 @@ def my_custom_annotation_handler(annotation):
     }
 
     annotations_component.json(output_json)
+
 
 def get_file_hash(fname):
     hash_md5 = blake2b()
@@ -245,19 +256,33 @@ if uploaded_file:
         if not highlight_affiliations:
             annotations = list(filter(lambda a: a['type'] != 'affiliation', annotations))
 
-        if height > -1:
-            pdf_viewer(
-                input=st.session_state['binary'],
-                width=width,
-                height=height,
-                annotations=annotations,
-                pages_vertical_spacing=pages_vertical_spacing,
-                annotation_outline_size=annotation_thickness,
-                pages_to_render=st.session_state['page_selection'],
-                render_text=enable_text,
-                resolution_boost=resolution_boost,
-                on_annotation_click=my_custom_annotation_handler
-            )
+        if st.session_state['size_in_pixel']:
+            if height > -1:
+                pdf_viewer(
+                    input=st.session_state['binary'],
+                    width=width,
+                    height=height,
+                    annotations=annotations,
+                    pages_vertical_spacing=pages_vertical_spacing,
+                    annotation_outline_size=annotation_thickness,
+                    pages_to_render=st.session_state['page_selection'],
+                    render_text=enable_text,
+                    resolution_boost=resolution_boost,
+                    on_annotation_click=my_custom_annotation_handler
+                )
+            else:
+                pdf_viewer(
+                    input=st.session_state['binary'],
+                    width=width,
+                    annotations=annotations,
+                    pages_vertical_spacing=pages_vertical_spacing,
+                    annotation_outline_size=annotation_thickness,
+                    pages_to_render=st.session_state['page_selection'],
+                    render_text=enable_text,
+                    resolution_boost=resolution_boost,
+                    on_annotation_click=my_custom_annotation_handler
+                )
+
         else:
             pdf_viewer(
                 input=st.session_state['binary'],
