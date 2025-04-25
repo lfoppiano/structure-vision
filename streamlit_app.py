@@ -162,7 +162,13 @@ annotations_to_element = {
 }
 
 def my_custom_annotation_handler(annotation):
-    annotations_component.json(annotation)
+    output_json = {
+        "Index": annotation['index'],
+        "Page": annotation['page'],
+        "Structure": annotations_to_element[annotation['type']],
+    }
+
+    annotations_component.json(output_json)
 
 def get_file_hash(fname):
     hash_md5 = blake2b()
