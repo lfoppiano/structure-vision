@@ -89,7 +89,14 @@ with st.sidebar:
     st.header("Height and width")
     resolution_boost = st.slider(label="Resolution boost", min_value=1, max_value=10, value=1)
     width = st.slider(label="PDF width", min_value=100, max_value=1000, value=700)
-    height = st.slider(label="PDF height", min_value=-1, max_value=10000, value=-1)
+    height = st.slider(label="PDF height", min_value=-1, max_value=10000, value=1000)
+
+    # Since page scrolling and annotation scrolling can’t be used together, I commented it out.
+    # st.header("Page Scroll")
+    # scroll_to_page = st.slider(label="Scroll to page", min_value=1, max_value=10, value=1)
+
+    st.header("Annotation Scroll")
+    scroll_to_annotation = st.slider(label="Scroll to annotation", min_value=1, max_value=1000, value=1)
 
     st.header("Page Selection")
     placeholder = st.empty()
@@ -155,13 +162,7 @@ annotations_to_element = {
 }
 
 def my_custom_annotation_handler(annotation):
-    output_json = {
-        "Index": annotation['index'],
-        "Page": annotation['page'],
-        "Structure": annotations_to_element[annotation['type']],
-    }
-
-    annotations_component.json(output_json)
+    annotations_component.json(annotation)
 
 def get_file_hash(fname):
     hash_md5 = blake2b()
@@ -254,6 +255,8 @@ if uploaded_file:
                 pages_vertical_spacing=pages_vertical_spacing,
                 annotation_outline_size=annotation_thickness,
                 pages_to_render=st.session_state['page_selection'],
+                # scroll_to_page=scroll_to_page,
+                scroll_to_annotation=scroll_to_annotation,
                 render_text=enable_text,
                 resolution_boost=resolution_boost,
                 on_annotation_click=my_custom_annotation_handler
@@ -266,6 +269,8 @@ if uploaded_file:
                 pages_vertical_spacing=pages_vertical_spacing,
                 annotation_outline_size=annotation_thickness,
                 pages_to_render=st.session_state['page_selection'],
+                # scroll_to_page=scroll_to_page,
+                scroll_to_annotation=scroll_to_annotation,
                 render_text=enable_text,
                 resolution_boost=resolution_boost,
                 on_annotation_click=my_custom_annotation_handler
