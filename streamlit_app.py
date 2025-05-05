@@ -95,7 +95,14 @@ with st.sidebar:
                                                   disabled=not st.session_state['uploaded'])
     if st.session_state['size_in_pixel']:
         width = st.slider(label="PDF width", min_value=100, max_value=1000, value=700)
-        height = st.slider(label="PDF height", min_value=-1, max_value=10000, value=-1)
+        height = st.slider(label="PDF height", min_value=-1, max_value=10000, value=1000)
+
+    # Since page scrolling and annotation scrolling can’t be used together, I commented it out.
+    # st.header("Page Scroll")
+    # scroll_to_page = st.slider(label="Scroll to page", min_value=1, max_value=10, value=1)
+
+    st.header("Annotation Scroll")
+    scroll_to_annotation = st.slider(label="Scroll to annotation", min_value=1, max_value=1000, value=1)
     else:
         width = st.slider(label="PDF width", min_value=-1, max_value=100, value=100)
         width = str(width) + "%"
@@ -266,6 +273,8 @@ if uploaded_file:
                     pages_vertical_spacing=pages_vertical_spacing,
                     annotation_outline_size=annotation_thickness,
                     pages_to_render=st.session_state['page_selection'],
+                    # scroll_to_page=scroll_to_page,
+                    scroll_to_annotation=scroll_to_annotation,
                     render_text=enable_text,
                     resolution_boost=resolution_boost,
                     on_annotation_click=my_custom_annotation_handler
@@ -278,6 +287,8 @@ if uploaded_file:
                     pages_vertical_spacing=pages_vertical_spacing,
                     annotation_outline_size=annotation_thickness,
                     pages_to_render=st.session_state['page_selection'],
+                    # scroll_to_page=scroll_to_page,
+                    scroll_to_annotation=scroll_to_annotation,
                     render_text=enable_text,
                     resolution_boost=resolution_boost,
                     on_annotation_click=my_custom_annotation_handler
@@ -291,6 +302,8 @@ if uploaded_file:
                 pages_vertical_spacing=pages_vertical_spacing,
                 annotation_outline_size=annotation_thickness,
                 pages_to_render=st.session_state['page_selection'],
+                # scroll_to_page=scroll_to_page,
+                scroll_to_annotation=scroll_to_annotation,
                 render_text=enable_text,
                 resolution_boost=resolution_boost,
                 on_annotation_click=my_custom_annotation_handler
