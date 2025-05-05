@@ -96,6 +96,9 @@ with st.sidebar:
     if st.session_state['size_in_pixel']:
         width = st.slider(label="PDF width", min_value=100, max_value=1000, value=700)
         height = st.slider(label="PDF height", min_value=-1, max_value=10000, value=1000)
+    else:
+        width = st.slider(label="PDF width", min_value=-1, max_value=100, value=100)
+        width = str(width) + "%"
 
     # Since page scrolling and annotation scrolling can’t be used together, I commented it out.
     # st.header("Page Scroll")
@@ -103,9 +106,6 @@ with st.sidebar:
 
     st.header("Annotation Scroll")
     scroll_to_annotation = st.slider(label="Scroll to annotation", min_value=1, max_value=1000, value=1)
-    else:
-        width = st.slider(label="PDF width", min_value=-1, max_value=100, value=100)
-        width = str(width) + "%"
 
     st.header("Page Selection")
     placeholder = st.empty()
